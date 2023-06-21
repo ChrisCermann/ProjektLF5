@@ -1116,7 +1116,7 @@ GameObject:
   - component: {fileID: 970472059}
   - component: {fileID: 970472061}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: MoneyCountText
   m_TagString: Text
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1301,7 +1301,6 @@ MonoBehaviour:
   speed: 5
   sprung_hoehe: 8
   panel: {fileID: 165185760}
-  panelText: {fileID: 1687716935}
 --- !u!50 &1013229687
 Rigidbody2D:
   serializedVersion: 4
@@ -1955,7 +1954,6 @@ GameObject:
   - component: {fileID: 1687716934}
   - component: {fileID: 1687716936}
   - component: {fileID: 1687716935}
-  - component: {fileID: 1687716937}
   m_Layer: 5
   m_Name: TextSpielEnde
   m_TagString: Text
@@ -2016,7 +2014,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Spiel vorbei
+  m_Text: 
 --- !u!222 &1687716936
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2025,19 +2023,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687716933}
   m_CullTransparentMesh: 1
---- !u!114 &1687716937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687716933}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70474a84d1a81a24081d579fb8389b8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel_text: {fileID: 1687716935}
 --- !u!1 &1694109604
 GameObject:
   m_ObjectHideFlags: 0

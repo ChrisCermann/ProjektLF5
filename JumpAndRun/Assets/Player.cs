@@ -7,28 +7,28 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     //Wenn dem Objekt zugewiesene Variabeln public sind können sie nur noch über die grafische Oberfläche verändert werden (kp warum)
-    public float speed = 5;
-    public float sprung_hoehe = 8;
-    private Rigidbody2D rb;
-    private bool is_grounded = false;
+    public float speed;
+    public float sprung_hoehe;
+    public GameObject panel;
 
+    private bool is_grounded = false;
+    private Rigidbody2D rb;
+    private Text SpielEndeText;
     private Animator anim;
     private Vector3 rotation;
-
-    private CoinManager C_Manager;
-    //private PanelManager P_Manager;
-
-    public GameObject panel;
-    public Text panelText;
+    private CoinManager C_Manager; 
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        
+        SpielEndeText = panel.transform.GetChild(1).GetComponent<Text>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         rotation = transform.eulerAngles;
         C_Manager = GameObject.FindGameObjectWithTag("Text").GetComponent<CoinManager>();
-        //P_Manager = GameObject.FindGameObjectWithTag("Text").GetComponent<PanelManager>();
+        
 
             
     }
@@ -73,12 +73,14 @@ public class Player : MonoBehaviour
         //Sprung hinzufügen
         if (Input.GetKeyDown(KeyCode.Space) && is_grounded)
         {
-            rb.AddForce(Vector2.up * sprung_hoehe, ForceMode2D.Impulse); //Forcemode Impulse sorgt für eine Art Fade Bewegung (macht den Sprung nicht statisch)
+            //Forcemode Impulse sorgt für eine Art Fade Bewegung (macht den Sprung nicht statisch)
+            rb.AddForce(Vector2.up * sprung_hoehe, ForceMode2D.Impulse); 
             is_grounded = false; 
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) //Prüfen ob der Spieler den Boden berührt hat. Wenn das wahr ist wird is_grounded true und der Spieler kann wieder springen
+    //Prüfen ob der Spieler den Boden berührt hat. Wenn das wahr ist wird is_grounded true und der Spieler kann wieder springen
+    private void OnCollisionEnter2D(Collision2D collision) 
     {
         if(collision.gameObject.tag == "ground")
         {
@@ -97,19 +99,19 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "Spike") 
         {
-            panel.SetActive(true);
-            panelText.text = "Game Over";           
+            panel.gameObject.SetActive(true);
+            SpielEndeText.text = "Game Over";           
             Destroy(gameObject);
         }
 
         if(other.gameObject.tag == "Finish")
         {
-            panel.SetActive(true);
-            panelText.text = "Gewonnen";            
+            panel.gameObject.SetActive(true);
+            SpielEndeText.text = "Gewonnen";            
             Destroy(gameObject);
         }
 
     }
 
-
+    
 }
