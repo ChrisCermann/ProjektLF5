@@ -8,26 +8,47 @@ public class Player : MonoBehaviour
 {
     //Wenn dem Objekt zugewiesene Variabeln public sind können sie nur noch über die grafische Oberfläche verändert werden (kp warum)
     public float speed;
-    public float sprung_hoehe;
+    public float sprungHoehe;
     public GameObject panel;
+    public GameObject spielerKamera;
 
-    private bool is_grounded = false;
+    private int anzahlLeben = 3;
+    private int anzahlTode;
+    private bool isGrounded = false;
     private Rigidbody2D rb;
-    private Text SpielEndeText;
+    private Text spielEndeText;
+    private Text anzahlTodeText;
     private Animator anim;
     private Vector3 rotation;
-    private CoinManager C_Manager; 
+    private CoinManager cManager;
+
+    void LebeneVerlieren()
+    {
+        anzahlLeben--;
+        anzahlTode++;
+        if (anzahlLeben == 0)
+        {
+            panel.gameObject.SetActive(true);
+            anzahlTodeText.text = $"Du bist {anzahlTode} mal gestorben";
+            spielEndeText.text = "Game Over";
+            Destroy(gameObject);
+
+        }
+    }
     
 
     // Start is called before the first frame update
     void Start()
     {
         
-        SpielEndeText = panel.transform.GetChild(1).GetComponent<Text>();
+        spielEndeText = panel.transform.GetChild(1).GetComponent<Text>();
+        //test
+        anzahlTodeText = panel.transform.GetChild(2).GetComponent<Text>();
+        
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         rotation = transform.eulerAngles;
-        C_Manager = GameObject.FindGameObjectWithTag("Text").GetComponent<CoinManager>();
+        cManager = GameObject.FindGameObjectWithTag("Text").GetComponent<CoinManager>();
         
 
             
@@ -36,6 +57,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         float richtung = Input.GetAxis("Horizontal");
 
         //Laufanimation oder Stehanimation verwenden
@@ -61,7 +83,7 @@ public class Player : MonoBehaviour
             transform.Translate(Vector2.right * speed * richtung * Time.deltaTime);
         }
 
-        if(is_grounded == false)
+        if(isGrounded == false)
         {
             anim.SetBool("IsJumping", true);
         }
@@ -71,12 +93,14 @@ public class Player : MonoBehaviour
         }
 
         //Sprung hinzufügen
-        if (Input.GetKeyDown(KeyCode.Space) && is_grounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             //Forcemode Impulse sorgt für eine Art Fade Bewegung (macht den Sprung nicht statisch)
-            rb.AddForce(Vector2.up * sprung_hoehe, ForceMode2D.Impulse); 
-            is_grounded = false; 
+            rb.AddForce(Vector2.up * sprungHoehe, ForceMode2D.Impulse); 
+            isGrounded = false; 
         }
+
+        spielerKamera.transform.position = new Vector3(transform.position.x, 0, -10);
     }
 
     //Prüfen ob der Spieler den Boden berührt hat. Wenn das wahr ist wird is_grounded true und der Spieler kann wieder springen
@@ -84,30 +108,35 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "ground")
         {
-            is_grounded = true;
+            isGrounded = true;
+        }
+        if (collision.gameObject.tag == "Enemy")
+        {
+            LebeneVerlieren();
         }
     }
 
     // Bestimmt was passieren soll, wenn man ein Objekt berührt
     private void OnTriggerEnter2D(Collider2D other) 
     {
+        
+
         if (other.gameObject.tag == "Coin") 
         {
-            C_Manager.Addmoney();
+            cManager.Addmoney();
             Destroy(other.gameObject);
         }
 
-        if (other.gameObject.tag == "Spike") 
+        if (other.gameObject.tag == "Spike")
         {
-            panel.gameObject.SetActive(true);
-            SpielEndeText.text = "Game Over";           
-            Destroy(gameObject);
+            LebeneVerlieren();
         }
 
         if(other.gameObject.tag == "Finish")
         {
             panel.gameObject.SetActive(true);
-            SpielEndeText.text = "Gewonnen";            
+            anzahlTodeText.text = $"Du bist {anzahlTode} mal gestorben";
+            spielEndeText.text = "Gewonnen";
             Destroy(gameObject);
         }
 
