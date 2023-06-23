@@ -9,6 +9,7 @@ TagManager:
   - ground
   - Text
   - Spike
+  - Herz
   layers:
   - Default
   - TransparentFX

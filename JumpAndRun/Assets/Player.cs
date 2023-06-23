@@ -12,6 +12,10 @@ public class Player : MonoBehaviour
     public GameObject panel;
     public GameObject spielerKamera;
 
+    public GameObject herz1;
+    public GameObject herz2;
+    public GameObject herz3;
+
     private int anzahlLeben = 3;
     private int anzahlTode;
     private bool isGrounded = false;
@@ -26,10 +30,19 @@ public class Player : MonoBehaviour
     {
         anzahlLeben--;
         anzahlTode++;
-        if (anzahlLeben == 0)
+        if (anzahlLeben == 2)
         {
+            Destroy(herz3);
+        }
+        else if (anzahlLeben == 1)
+        {
+            Destroy(herz2);
+        }
+        else if (anzahlLeben == 0)
+        {
+            Destroy(herz1);
             panel.gameObject.SetActive(true);
-            anzahlTodeText.text = $"Du bist {anzahlTode} mal gestorben";
+            anzahlTodeText.text = $"Du hast {anzahlTode} Leben verloren";
             spielEndeText.text = "Game Over";
             Destroy(gameObject);
 
@@ -83,6 +96,7 @@ public class Player : MonoBehaviour
             transform.Translate(Vector2.right * speed * richtung * Time.deltaTime);
         }
 
+        //Überprüfen ob der Spieler springen darf
         if(isGrounded == false)
         {
             anim.SetBool("IsJumping", true);
@@ -99,8 +113,11 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.up * sprungHoehe, ForceMode2D.Impulse); 
             isGrounded = false; 
         }
-
+        //Kamera und herzen sollen sich mit dem Spieler 
         spielerKamera.transform.position = new Vector3(transform.position.x, 0, -10);
+        herz1.transform.position = new Vector3(transform.position.x - 8, 4, 0);
+        herz2.transform.position = new Vector3(transform.position.x - 7, 4, 0);
+        herz3.transform.position = new Vector3(transform.position.x - 6, 4, 0);
     }
 
     //Prüfen ob der Spieler den Boden berührt hat. Wenn das wahr ist wird is_grounded true und der Spieler kann wieder springen
@@ -119,7 +136,6 @@ public class Player : MonoBehaviour
     // Bestimmt was passieren soll, wenn man ein Objekt berührt
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        
 
         if (other.gameObject.tag == "Coin") 
         {
