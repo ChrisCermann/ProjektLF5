@@ -5,20 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// Restart() Wird ausgeführt, wenn der User den Restart Button klickt. Hat die Aufgabe das Spiel neu zu starten
+    /// </summary>
     public void Restart()
     {
-        SceneManager.LoadScene("TestSpiel");
+        SceneManager.LoadScene("JumpAndRunScene");
     }
 }

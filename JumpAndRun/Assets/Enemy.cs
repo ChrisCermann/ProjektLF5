@@ -9,6 +9,10 @@ public class EnemyManager : MonoBehaviour
     public float links;
     private Vector3 rotation;
 
+    /// <summary>
+    /// Start() Diese Methode wird automatisch von Unity erstellt und wird immer ausgeführt, wenn man das Spiel startet
+    /// </summary>
+    // Start is called before the first frame update
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +20,9 @@ public class EnemyManager : MonoBehaviour
         links = transform.position.x - links;
         rotation = transform.eulerAngles;
     }
-
+    /// <summary>
+    /// Update() Wird automatisch von Unity erstellt und wird jedes Frame aufgerufen(also so gut wie immer) Sie bestimmt den Speed des Gegners und sorgt dafür, dass er sich umdreht
+    /// </summary>
     // Update is called once per frame
     void Update()
     {
